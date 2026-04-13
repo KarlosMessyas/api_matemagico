@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: matemagico
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/matemagico
+    username: postgres
+    password: 123456
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
