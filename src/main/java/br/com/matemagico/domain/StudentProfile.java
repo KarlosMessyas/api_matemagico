@@ -1,5 +1,6 @@
 package br.com.matemagico.domain;
 
+import br.com.matemagico.domain.enums.AutismLevel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,15 @@ public class StudentProfile {
     private Integer level;
 
     private String preferences;
+
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private AutismLevel autismLevel;
+
+    private Boolean soundSensitivity;
+
+    private Boolean colorSensitivity;
 
     @OneToOne
     @JoinColumn(name = "user_id")
