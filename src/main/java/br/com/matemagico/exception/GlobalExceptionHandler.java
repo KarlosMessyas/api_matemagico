@@ -26,4 +26,12 @@ public class GlobalExceptionHandler {
 
         return erros;
     }
+
+    @ExceptionHandler(ProfileAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleProfileAlreadyExists(ProfileAlreadyExistsException ex) {
+        Map<String, String> erro = new HashMap<>();
+        erro.put("error", ex.getMessage());
+        return erro;
+    }
 }

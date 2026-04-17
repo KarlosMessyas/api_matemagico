@@ -3,6 +3,7 @@ package br.com.matemagico.service;
 import br.com.matemagico.domain.StudentProfile;
 import br.com.matemagico.domain.User;
 import br.com.matemagico.exception.NotFoundException;
+import br.com.matemagico.exception.ProfileAlreadyExistsException;
 import br.com.matemagico.repository.StudentProfileRepository;
 import br.com.matemagico.repository.UserRepository;
 import br.com.matemagico.mapper.StudentProfileMapper;
@@ -22,6 +23,11 @@ public class StudentProfileService {
     }
 
     public StudentProfileResponseDTO create(StudentProfileRequestDTO dto) {
+
+        if (repository.existsByUserId(dto.getUserId())) {
+            throw new ProfileAlreadyExistsException("Este usuário já possui um perfil de estudante vinculado.");
+        }
+
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado!"));
 
