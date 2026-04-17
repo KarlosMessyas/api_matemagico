@@ -12,6 +12,10 @@ public class StudentProfileMapper {
         profile.setLevel(dto.getLevel());
         profile.setPreferences(dto.getPreferences());
         profile.setUser(user);
+        profile.setAutismLevel(dto.getAutismLevel());
+        profile.setAge(dto.getAge());
+        profile.setSoundSensitivity(dto.getSoundSensitivity());
+        profile.setColorSensitivity(dto.getColorSensitivity());
         return profile;
     }
 
@@ -20,7 +24,11 @@ public class StudentProfileMapper {
                 profile.getId(),
                 profile.getLevel(),
                 profile.getPreferences(),
-                profile.getUser().getId()
+                profile.getUser().getId(),
+                profile.getAutismLevel(),
+                profile.getAge(),
+                profile.getSoundSensitivity(),
+                profile.getColorSensitivity()
         );
     }
 }
