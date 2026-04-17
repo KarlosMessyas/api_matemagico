@@ -2,6 +2,7 @@ package br.com.matemagico.service;
 
 import br.com.matemagico.domain.StudentProfile;
 import br.com.matemagico.domain.User;
+import br.com.matemagico.exception.NotFoundException;
 import br.com.matemagico.repository.StudentProfileRepository;
 import br.com.matemagico.repository.UserRepository;
 import br.com.matemagico.mapper.StudentProfileMapper;
@@ -22,7 +23,7 @@ public class StudentProfileService {
 
     public StudentProfileResponseDTO create(StudentProfileRequestDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado!"));
 
         StudentProfile profile = StudentProfileMapper.toEntity(dto, user);
         StudentProfile saved = repository.save(profile);

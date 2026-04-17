@@ -5,6 +5,7 @@ import br.com.matemagico.controller.response.AnswerResponseDTO;
 import br.com.matemagico.domain.Activity;
 import br.com.matemagico.domain.Progress;
 import br.com.matemagico.domain.StudentProfile;
+import br.com.matemagico.exception.NotFoundException;
 import br.com.matemagico.mapper.ActivityMapper;
 import br.com.matemagico.repository.ActivityRepository;
 import br.com.matemagico.controller.request.ActivityRequestDTO;
@@ -42,10 +43,10 @@ public class ActivityService {
     public AnswerResponseDTO answer(Long activityId, AnswerRequestDTO dto) {
         try {
             Activity activity = activityRepository.findById(activityId)
-                    .orElseThrow(() -> new RuntimeException("Activity not found"));
+                    .orElseThrow(() -> new NotFoundException("Atividade não encontrada!"));
 
             StudentProfile student = studentRepository.findById(dto.getStudentId())
-                    .orElseThrow(() -> new RuntimeException("Student not found"));
+                    .orElseThrow(() -> new NotFoundException("Aluno não encontrado!"));
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(activity.getContent());

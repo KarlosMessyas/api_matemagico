@@ -8,13 +8,13 @@ import lombok.Setter;
 @Getter @Setter
 public class UserRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "O campo nome não pode estar em branco.")
     String name;
 
     @Email
-    @NotBlank
+    @NotBlank(message = "O campo email não pode estar em branco.")
     String email;
 
-    @NotBlank
+    @NotBlank(message = "O campo senha não pode estar em branco.")
     String password;
 }
