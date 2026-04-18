@@ -66,9 +66,12 @@ public class ActivityService {
 
             progressRepository.save(progress);
 
+            System.out.println("CONTENT: " + activity.getContent());
+
             return new AnswerResponseDTO(isCorrect, score);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Error processing answer");
         }
     }

@@ -1,6 +1,7 @@
 package br.com.matemagico.controller;
 
 import br.com.matemagico.controller.request.StudentProfileRequestDTO;
+import br.com.matemagico.controller.response.DashboardResponseDTO;
 import br.com.matemagico.controller.response.StudentProfileResponseDTO;
 import br.com.matemagico.service.StudentProfileService;
 import org.springframework.web.bind.annotation.*;
@@ -18,5 +19,10 @@ public class StudentProfileController {
     @PostMapping
     public StudentProfileResponseDTO create(@RequestBody StudentProfileRequestDTO dto) {
         return service.create(dto);
+    }
+
+    @GetMapping("/{id}/dashboard")
+    public DashboardResponseDTO dashboard(@PathVariable Long id) {
+        return service.getDashboard(id);
     }
 }
