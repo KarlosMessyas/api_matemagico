@@ -1,14 +1,19 @@
 package br.com.matemagico.security;
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter; // IMPORT NOVO
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Component
-public class JwtFilter implements Filter {
+public class JwtFilter extends OncePerRequestFilter { // HERANÇA MUDOU AQUI
 
     private final JwtService jwtService;
 
@@ -17,35 +22,40 @@ public class JwtFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
+        String path = request.getRequestURI();
 
-        String path = req.getRequestURI();
-
-        if (path.contains("/auth/login")) {
-            chain.doFilter(request, response);
+        // Ignora rotas públicas
+        if (path.startsWith("/auth") || path.startsWith("/users")) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        String auth = req.getHeader("Authorization");
+        String authHeader = request.getHeader("Authorization");
 
-        if (auth == null || !auth.startsWith("Bearer ")) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            res.getWriter().write("Antes de acessar essa tela, realize o login!");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Insira o token");
             return;
         }
 
-        String token = auth.substring(7);
+        String token = authHeader.substring(7);
 
         if (!jwtService.isValid(token)) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            res.getWriter().write("Token inválido");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token inválido");
             return;
         }
 
-        chain.doFilter(request, response);
+        String email = jwtService.getSubject(token);
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        filterChain.doFilter(request, response);
     }
 }

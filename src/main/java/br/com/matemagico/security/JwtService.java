@@ -30,7 +30,7 @@ public class JwtService {
                 .compact();
     }
 
-    public String getEmail(String token) {
+    public String getSubject(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()

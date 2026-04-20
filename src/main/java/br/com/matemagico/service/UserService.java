@@ -6,6 +6,7 @@ import br.com.matemagico.domain.User;
 import br.com.matemagico.exception.EmailAlreadyExistsException;
 import br.com.matemagico.mapper.UserMapper;
 import br.com.matemagico.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO create(UserRequestDTO userRequestDTO) {
@@ -26,6 +29,9 @@ public class UserService {
         }
 
         User user = UserMapper.toEntity(userRequestDTO);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         User saved = userRepository.save(user);
         return UserMapper.toResponse(saved);
     }
