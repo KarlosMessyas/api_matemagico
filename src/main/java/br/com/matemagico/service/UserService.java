@@ -3,6 +3,7 @@ package br.com.matemagico.service;
 import br.com.matemagico.controller.request.UserRequestDTO;
 import br.com.matemagico.controller.response.UserResponseDTO;
 import br.com.matemagico.domain.User;
+import br.com.matemagico.exception.EmailAlreadyExistsException;
 import br.com.matemagico.mapper.UserMapper;
 import br.com.matemagico.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,11 @@ public class UserService {
     }
 
     public UserResponseDTO create(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.existsByEmail(userRequestDTO.getEmail())) {
+            throw new EmailAlreadyExistsException("Email já cadastrado");
+        }
+
         User user = UserMapper.toEntity(userRequestDTO);
         User saved = userRepository.save(user);
         return UserMapper.toResponse(saved);

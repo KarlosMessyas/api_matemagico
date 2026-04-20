@@ -1,6 +1,7 @@
 package br.com.matemagico.controller;
 
 import br.com.matemagico.controller.request.UserRequestDTO;
+import br.com.matemagico.controller.response.ApiResponse;
 import br.com.matemagico.controller.response.UserResponseDTO;
 import br.com.matemagico.service.UserService;
 import jakarta.validation.Valid;
@@ -19,8 +20,9 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDTO create(@RequestBody @Valid UserRequestDTO dto) {
-        return service.create(dto);
+    public ApiResponse<UserResponseDTO> create(@RequestBody @Valid UserRequestDTO dto) {
+        UserResponseDTO user = service.create(dto);
+        return new ApiResponse<>(user, "User created successfully");
     }
 
     @GetMapping

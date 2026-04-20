@@ -34,4 +34,10 @@ public class GlobalExceptionHandler {
         erro.put("error", ex.getMessage());
         return erro;
     }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleEmailExists(EmailAlreadyExistsException ex) {
+        return ex.getMessage();
+    }
 }
