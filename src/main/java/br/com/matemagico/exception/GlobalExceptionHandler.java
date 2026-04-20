@@ -1,6 +1,8 @@
 package br.com.matemagico.exception;
 
+import br.com.matemagico.controller.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +41,17 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public String handleEmailExists(EmailAlreadyExistsException ex) {
         return ex.getMessage();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleGeneric(Exception ex) {
+        return "Erro interno no servidor";
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidCredentials(InvalidCredentialsException ex) {
+        return new ErrorResponse(ex.getMessage(), 401);
     }
 }
