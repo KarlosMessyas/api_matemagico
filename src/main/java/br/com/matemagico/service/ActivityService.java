@@ -40,39 +40,15 @@ public class ActivityService {
                 .toList();
     }
 
-    public AnswerResponseDTO answer(Long activityId, AnswerRequestDTO dto) {
-        try {
-            Activity activity = activityRepository.findById(activityId)
-                    .orElseThrow(() -> new NotFoundException("Atividade não encontrada!"));
+    public List<ActivityResponseDTO> findActivitiesForStudent(Long studentId) {
 
-            StudentProfile student = studentRepository.findById(dto.getStudentId())
-                    .orElseThrow(() -> new NotFoundException("Aluno não encontrado!"));
+        StudentProfile student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new NotFoundException("Aluno não encontrado!"));
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode json = mapper.readTree(activity.getContent());
+        List<Activity> activities = activityRepository.findByLevel(student.getLevel());
 
-            int correctAnswer = json.get("answer").asInt();
-
-            boolean isCorrect = dto.getAnswer() == correctAnswer;
-
-            int score = isCorrect ? 100 : 0;
-
-            Progress progress = new Progress();
-            progress.setStudent(student);
-            progress.setActivity(activity);
-            progress.setCorrectAnswers(isCorrect ? 1 : 0);
-            progress.setWrongAnswers(isCorrect ? 0 : 1);
-            progress.setScore(score);
-
-            progressRepository.save(progress);
-
-            System.out.println("CONTENT: " + activity.getContent());
-
-            return new AnswerResponseDTO(isCorrect, score);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error processing answer");
-        }
+        return activities.stream()
+                .map(ActivityMapper::toResponse)
+                .toList();
     }
 }

@@ -2,13 +2,17 @@ package br.com.matemagico.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class DashboardResponseDTO {
 
-    private Long totalActivities;
-    private Integer correctAnswers;
-    private Integer wrongAnswers;
-    private Double averageScore;
+    private long totalActivities;
+    private int correctAnswers;
+    private int wrongAnswers;
+    private double averageScore;
 }

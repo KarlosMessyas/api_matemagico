@@ -4,6 +4,9 @@ import br.com.matemagico.controller.request.StudentProfileRequestDTO;
 import br.com.matemagico.controller.response.DashboardResponseDTO;
 import br.com.matemagico.controller.response.StudentProfileResponseDTO;
 import br.com.matemagico.service.StudentProfileService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,12 +20,14 @@ public class StudentProfileController {
     }
 
     @PostMapping
-    public StudentProfileResponseDTO create(@RequestBody StudentProfileRequestDTO dto) {
-        return service.create(dto);
+    public ResponseEntity<StudentProfileResponseDTO> create(@Valid @RequestBody StudentProfileRequestDTO dto) {
+        StudentProfileResponseDTO response = service.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}/dashboard")
-    public DashboardResponseDTO dashboard(@PathVariable Long id) {
-        return service.getDashboard(id);
+    public ResponseEntity<DashboardResponseDTO> dashboard(@PathVariable Long id) {
+        DashboardResponseDTO response = service.getDashboard(id);
+        return ResponseEntity.ok(response);
     }
 }
