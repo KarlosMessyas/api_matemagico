@@ -11,22 +11,31 @@ import lombok.Setter;
 @Setter
 public class StudentProfileRequestDTO {
 
+    @NotNull(message = "O ID do usuário vinculado é obrigatório.")
+    private Long userId;
+
     @NotNull(message = "O nível não pode ser nulo.")
     @Min(value = 1, message = "O nível deve ser no mínimo 1.")
     private Integer level;
 
-    @NotBlank(message = "As preferências não podem estar em branco.")
-    private String preferences;
-
-    @NotNull(message = "O ID do usuário vinculado é obrigatório.")
-    private Long userId;
+    @NotNull(message = "A idade é obrigatória.")
+    @Min(value = 1, message = "A idade deve ser um valor válido e maior que zero.")
+    private Integer age;
 
     @NotNull(message = "O nível de suporte deve ser informado.")
     private AutismLevel autismLevel;
 
-    @NotNull(message = "A idade é obrigatória.")
-    @Min(value = 1, message = "A idade deve ser um valor válido e maior que zero.")
-    private Integer age;
+    @NotBlank(message = "O hiperfoco da criança não pode estar em branco.")
+    private String hyperfocus;
+
+    @NotBlank(message = "A escolha do avatar (herói) é obrigatória.")
+    private String avatar;
+
+    @NotBlank(message = "A cor do tema deve ser informada.")
+    private String themeColor;
+
+    @NotBlank(message = "O tamanho da fonte deve ser informado.")
+    private String fontSize;
 
     @NotNull(message = "A informação sobre sensibilidade sonora é obrigatória.")
     private Boolean soundSensitivity;

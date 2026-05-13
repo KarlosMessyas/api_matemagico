@@ -16,16 +16,16 @@ public class StudentProfile {
     private Long id;
 
     private Integer level;
-
-    private String preferences;
-
     private Integer age;
 
     @Enumerated(EnumType.STRING)
     private AutismLevel autismLevel;
 
+    private String hyperfocus;
+    private String avatar;
+    private String themeColor;
+    private String fontSize;
     private Boolean soundSensitivity;
-
     private Boolean colorSensitivity;
 
     @OneToOne

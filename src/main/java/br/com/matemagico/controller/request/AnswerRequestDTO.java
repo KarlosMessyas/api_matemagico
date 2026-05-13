@@ -11,6 +11,12 @@ public class AnswerRequestDTO {
     @NotNull(message = "O ID do estudante é obrigatório.")
     private Long studentId;
 
+    @NotNull(message = "O ID da atividade é obrigatório.")
+    private Long activityId;
+
     @NotNull(message = "A resposta não pode estar nula.")
-    private Integer answer;
+    private String answer;
+
+    @NotNull(message = "O tempo de resposta é obrigatório para os relatórios.")
+    private Integer timeSpentInSeconds;
 }
